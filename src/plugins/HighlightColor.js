@@ -22,7 +22,7 @@ export default class HighlightColor extends Plugin {
 					return;
 				}
 
-				editor.execute( 'fontBackgroundColor', { value: config.value } );
+				editor.execute( 'fontColor', { value: config.value } );
 			} );
 
 			return view;
