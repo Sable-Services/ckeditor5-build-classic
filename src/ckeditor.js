@@ -31,6 +31,7 @@ import Table from '@ckeditor/ckeditor5-table/src/table';
 import TableToolbar from '@ckeditor/ckeditor5-table/src/tabletoolbar';
 import TextTransformation from '@ckeditor/ckeditor5-typing/src/texttransformation';
 import Font from '@ckeditor/ckeditor5-font/src/font';
+import HighlightColor from './plugins/HighlightColor';
 
 class ClassicEditor extends ClassicEditorBase {}
 class InlineEditor extends InlineEditorBase {}
@@ -59,7 +60,8 @@ const plugins = [
 	Table,
 	TableToolbar,
 	TextTransformation,
-	Font
+	Font,
+	HighlightColor
 ];
 
 ClassicEditor.builtinPlugins = plugins;
