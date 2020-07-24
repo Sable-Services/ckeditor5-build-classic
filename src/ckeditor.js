@@ -32,6 +32,7 @@ import TableToolbar from '@ckeditor/ckeditor5-table/src/tabletoolbar';
 import TextTransformation from '@ckeditor/ckeditor5-typing/src/texttransformation';
 import Font from '@ckeditor/ckeditor5-font/src/font';
 import HighlightColor from './plugins/HighlightColor';
+import WlmApplyStyles from './plugins/WlmApplyStyles';
 
 class ClassicEditor extends ClassicEditorBase {}
 class InlineEditor extends InlineEditorBase {}
@@ -61,7 +62,8 @@ const plugins = [
 	TableToolbar,
 	TextTransformation,
 	Font,
-	HighlightColor
+	HighlightColor,
+	WlmApplyStyles
 ];
 
 ClassicEditor.builtinPlugins = plugins;

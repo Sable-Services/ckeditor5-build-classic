@@ -16,13 +16,13 @@ export default class HighlightColor extends Plugin {
 			} );
 
 			view.on( 'execute', () => {
-				const config = editor.config.get( 'highlightColor' );
+				const config = editor.config.get( 'wlm' );
 
-				if ( !config.value ) {
+				if ( !config.settings || !config.settings.highlightColor ) {
 					return;
 				}
 
-				editor.execute( 'fontColor', { value: config.value } );
+				editor.execute( 'fontColor', { value: config.settings.highlightColor } );
 			} );
 
 			return view;
