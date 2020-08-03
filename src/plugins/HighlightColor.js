@@ -22,7 +22,16 @@ export default class HighlightColor extends Plugin {
 					return;
 				}
 
-				editor.execute( 'fontColor', { value: config.settings.highlightColor } );
+				const current = editor.model.document.selection.getAttribute( 'fontColor' );
+				let highlightColor = config.settings.highlightColor;
+
+				const textColor = editor.config.get( 'wlm' ).settings.color;
+
+				if ( current === highlightColor ) {
+					highlightColor = textColor;
+				}
+
+				editor.execute( 'fontColor', { value: highlightColor } );
 			} );
 
 			return view;
