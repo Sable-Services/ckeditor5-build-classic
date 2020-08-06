@@ -9,7 +9,7 @@ export default class WlmApplyStyles extends Plugin {
 		const editor = this.editor;
 
 		editor.model.document.on( 'change:data', () => {
-			if ( !editor.getData() ) {
+			if ( editor.model.document.selection.focus.parent.isEmpty ) {
 				const wlmConfig = editor.config.get( 'wlm' );
 
 				if ( !wlmConfig || !wlmConfig.settings ) {
