@@ -29,5 +29,9 @@ export default class WlmApplyStyles extends Plugin {
 				editor.execute( 'fontSize', { value: fontSize } );
 			}
 		} );
+
+		editor.editing.view.document.on( 'drop', e => {
+			e.stop();
+		} );
 	}
 }
