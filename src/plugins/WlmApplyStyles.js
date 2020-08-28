@@ -1,5 +1,5 @@
 import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
-// import plainTextToHtml from '@ckeditor/ckeditor5-clipboard/src/utils/plaintexttohtml';
+import plainTextToHtml from '@ckeditor/ckeditor5-clipboard/src/utils/plaintexttohtml';
 
 export default class WlmApplyStyles extends Plugin {
 	static get pluginName() {
@@ -8,22 +8,24 @@ export default class WlmApplyStyles extends Plugin {
 
 	init() {
 		const editor = this.editor;
+		const editingView = editor.editing.view;
+		const clipboardPlugin = editor.plugins.get( 'Clipboard' );
+
+		const wlmConfig = editor.config.get( 'wlm' );
+
+		if ( !wlmConfig || !wlmConfig.settings ) {
+			return;
+		}
+
+		const {
+			color,
+			backgroundColor,
+			fontFamily,
+			fontSize
+		} = wlmConfig.settings;
 
 		editor.model.document.on( 'change:data', () => {
 			if ( editor.model.document.selection.focus.parent.isEmpty ) {
-				const wlmConfig = editor.config.get( 'wlm' );
-
-				if ( !wlmConfig || !wlmConfig.settings ) {
-					return;
-				}
-
-				const {
-					color,
-					backgroundColor,
-					fontFamily,
-					fontSize
-				} = wlmConfig.settings;
-
 				editor.execute( 'fontFamily', { value: fontFamily } );
 				editor.execute( 'fontColor', { value: color } );
 				editor.execute( 'fontBackgroundColor', { value: backgroundColor } );
@@ -31,27 +33,30 @@ export default class WlmApplyStyles extends Plugin {
 			}
 		} );
 
-		const editingView = editor.editing.view;
-
 		editingView.document.on( 'drop', e => {
 			e.stop();
 		} );
 
-		// const clipboardPlugin = editor.plugins.get( 'Clipboard' );
-
-		// editingView.document.on( 'clipboardInput', (evt, data) => {
-		editingView.document.on( 'clipboardInput', evt => {
+		editingView.document.on( 'clipboardInput', ( evt, data ) => {
 			if ( editor.isReadOnly ) {
 				return;
 			}
 
-			// const dataTransfer = data.dataTransfer;
-			// let content = plainTextToHtml( dataTransfer.getData( 'text/plain' ) );
+			const dataTransfer = data.dataTransfer;
+			const content = plainTextToHtml( dataTransfer.getData( 'text/plain' ) );
 
-			// content = clipboardPlugin._htmlDataProcessor.toView( content );
+			const span = document.createElement( 'span' );
 
-			// clipboardPlugin.fire( 'inputTransformation', { content, dataTransfer } );
-			// editingView.scrollToTheSelection();
+			span.style.color = color;
+			span.style.backgroundColor = backgroundColor;
+			span.style.fontFamily = fontFamily;
+			span.style.fontSize = fontSize;
+			span.innerHTML = content;
+
+			const view = clipboardPlugin._htmlDataProcessor.toView( span.outerHTML );
+
+			clipboardPlugin.fire( 'inputTransformation', { content: view, dataTransfer } );
+			editingView.scrollToTheSelection();
 
 			evt.stop();
 		} );
